@@ -3,67 +3,293 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>3-Tier AWS Task App</title>
+  <title>CloudTasks | 3-Tier App on AWS</title>
   <style>
-    body { font-family: system-ui, sans-serif; max-width: 560px; margin: 40px auto; padding: 0 16px; background: #f5f6f8; color: #1f2933; }
-    h1 { font-size: 1.4rem; }
-    form { display: flex; gap: 8px; margin-bottom: 16px; }
-    input { flex: 1; padding: 10px; border: 1px solid #cbd2d9; border-radius: 6px; }
-    button { padding: 10px 14px; border: 0; border-radius: 6px; background: #2563eb; color: #fff; cursor: pointer; }
-    ul { list-style: none; padding: 0; }
-    li { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 12px; margin-bottom: 8px; border-radius: 6px; }
-    li button { background: #dc2626; padding: 6px 10px; }
-    #status { font-size: .85rem; color: #52606d; }
+    :root {
+      --bg: #f3f5fb;
+      --surface: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --primary: #4f46e5;
+      --primary-2: #7c3aed;
+      --ok: #10b981;
+      --bad: #ef4444;
+      --warn: #f59e0b;
+      --shadow: 0 10px 30px rgba(17, 24, 39, .08);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1020;
+        --surface: #121a2e;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --border: #25304d;
+        --shadow: 0 10px 30px rgba(0, 0, 0, .35);
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .hero {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2) 60%, #06b6d4);
+      color: #fff;
+      padding: 44px 20px 120px;
+    }
+    .wrap { max-width: 920px; margin: 0 auto; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255, 255, 255, .18);
+      display: grid; place-items: center; font-size: 22px;
+      backdrop-filter: blur(6px);
+    }
+    h1 { margin: 0; font-size: 1.7rem; letter-spacing: -.02em; }
+    .tag { margin: 2px 0 0; opacity: .85; font-size: .95rem; }
+    .pills { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 12px; border-radius: 999px; font-size: .82rem; font-weight: 600;
+      background: rgba(255, 255, 255, .16); border: 1px solid rgba(255, 255, 255, .25);
+    }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
+    .dot.ok { background: #34d399; box-shadow: 0 0 0 4px rgba(52, 211, 153, .25); }
+    .dot.bad { background: #f87171; box-shadow: 0 0 0 4px rgba(248, 113, 113, .25); }
+
+    main { margin-top: -84px; padding: 0 20px 48px; }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; box-shadow: var(--shadow); padding: 24px;
+    }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 18px; }
+    .stat { text-align: center; padding: 18px 10px; }
+    .stat b { display: block; font-size: 1.6rem; letter-spacing: -.02em; }
+    .stat span { color: var(--muted); font-size: .82rem; }
+
+    .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 18px; }
+    .node {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 10px; font-size: .85rem; font-weight: 600;
+      background: var(--bg); border: 1px solid var(--border);
+    }
+    .arrow { color: var(--muted); }
+    .flow-note { width: 100%; color: var(--muted); font-size: .8rem; margin: 2px 0 0; }
+
+    h2 { margin: 0 0 14px; font-size: 1.1rem; }
+    form { display: flex; gap: 10px; margin-bottom: 18px; }
+    input {
+      flex: 1; padding: 13px 14px; font-size: 1rem; color: var(--text);
+      background: var(--bg); border: 1px solid var(--border); border-radius: 10px; outline: none;
+    }
+    input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, .2); }
+    .btn {
+      border: 0; cursor: pointer; font-weight: 600; font-size: .95rem;
+      padding: 0 20px; border-radius: 10px; color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      transition: transform .12s ease, opacity .12s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: .6; cursor: wait; transform: none; }
+
+    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    li {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 14px 16px; border: 1px solid var(--border); border-radius: 12px;
+      background: var(--bg); animation: in .25s ease;
+    }
+    li.removing { opacity: 0; transform: translateX(14px); transition: all .2s ease; }
+    @keyframes in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    .t-title { font-weight: 600; word-break: break-word; }
+    .t-time { color: var(--muted); font-size: .78rem; }
+    .del {
+      border: 1px solid var(--border); background: transparent; color: var(--bad);
+      border-radius: 8px; padding: 6px 12px; cursor: pointer; font-weight: 600; font-size: .82rem;
+    }
+    .del:hover { background: rgba(239, 68, 68, .1); }
+    .empty { text-align: center; color: var(--muted); padding: 34px 10px; }
+    .empty .big { font-size: 2rem; }
+
+    footer { text-align: center; color: var(--muted); font-size: .8rem; padding: 0 20px 36px; }
+    #toast {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%) translateY(20px);
+      background: #111827; color: #fff; padding: 10px 16px; border-radius: 10px;
+      font-size: .88rem; opacity: 0; pointer-events: none; transition: all .25s ease;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%); }
+    @media (max-width: 560px) {
+      .stats { grid-template-columns: 1fr 1fr 1fr; }
+      .stat b { font-size: 1.2rem; }
+      form { flex-direction: column; }
+      .btn { padding: 12px; }
+    }
   </style>
 </head>
 <body>
-  <h1>Tasks (CloudFront + S3 → ALB → EC2 → RDS)</h1>
-  <p id="status">Checking API...</p>
-  <form id="form">
-    <input id="title" placeholder="New task" required maxlength="200">
-    <button type="submit">Add</button>
-  </form>
-  <ul id="list"></ul>
+  <header class="hero">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">&#9729;</div>
+        <div>
+          <h1>CloudTasks</h1>
+          <p class="tag">A production-style 3-tier application on AWS, built with Terraform</p>
+        </div>
+      </div>
+      <div class="pills">
+        <span class="pill"><span class="dot" id="dotApi"></span><span id="txtApi">API: checking</span></span>
+        <span class="pill"><span class="dot" id="dotDb"></span><span id="txtDb">Database: checking</span></span>
+        <span class="pill">Region: ap-south-1 (Mumbai)</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      <div class="stats">
+        <div class="card stat"><b id="statCount">0</b><span>Tasks stored in RDS</span></div>
+        <div class="card stat"><b id="statLatency">-</b><span>API latency</span></div>
+        <div class="card stat"><b id="statHost">2</b><span>App servers (Auto Scaling)</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:18px">
+        <h2>Request path</h2>
+        <div class="flow">
+          <span class="node">&#127760; CloudFront</span><span class="arrow">&rarr;</span>
+          <span class="node">&#9878; Load Balancer</span><span class="arrow">&rarr;</span>
+          <span class="node">&#128187; EC2 (private subnet)</span><span class="arrow">&rarr;</span>
+          <span class="node">&#128451; RDS PostgreSQL</span>
+          <p class="flow-note">Static files come from a private S3 bucket. The database password lives in AWS Secrets Manager and is read at runtime through an IAM role.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Tasks</h2>
+        <form id="form">
+          <input id="title" placeholder="What needs to be done?" maxlength="200" required autocomplete="off">
+          <button class="btn" id="addBtn" type="submit">Add task</button>
+        </form>
+        <ul id="list"></ul>
+        <div class="empty" id="empty" hidden>
+          <div class="big">&#128203;</div>
+          No tasks yet. Add one above and it will be saved in the database.
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>Provisioned with Terraform &middot; VPC &middot; ALB &middot; Auto Scaling &middot; RDS &middot; Secrets Manager &middot; CloudWatch</footer>
+  <div id="toast"></div>
 
   <script>
-    const list = document.getElementById("list");
-    const statusEl = document.getElementById("status");
+    const $ = (id) => document.getElementById(id);
+    const list = $("list");
 
-    async function load() {
+    function toast(msg) {
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2200);
+    }
+
+    function setStatus(dot, txt, label, state) {
+      $(dot).className = "dot " + state;
+      $(txt).textContent = label;
+    }
+
+    async function checkHealth() {
       try {
-        const res = await fetch("/api/tasks");
-        if (!res.ok) throw new Error(res.status);
-        const tasks = await res.json();
-        statusEl.textContent = "Connected to API and database";
-        list.innerHTML = "";
-        tasks.forEach(t => {
-          const li = document.createElement("li");
-          const span = document.createElement("span");
-          span.textContent = t.title;
-          const btn = document.createElement("button");
-          btn.textContent = "Delete";
-          btn.onclick = async () => { await fetch("/api/tasks/" + t.id, { method: "DELETE" }); load(); };
-          li.append(span, btn);
-          list.append(li);
-        });
+        const r = await fetch("/api/health");
+        setStatus("dotApi", "txtApi", r.ok ? "API: healthy" : "API: error", r.ok ? "ok" : "bad");
       } catch (e) {
-        statusEl.textContent = "API error: " + e.message;
+        setStatus("dotApi", "txtApi", "API: unreachable", "bad");
+      }
+      try {
+        const r = await fetch("/api/health/db");
+        setStatus("dotDb", "txtDb", r.ok ? "Database: connected" : "Database: error", r.ok ? "ok" : "bad");
+      } catch (e) {
+        setStatus("dotDb", "txtDb", "Database: unreachable", "bad");
       }
     }
 
-    document.getElementById("form").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const input = document.getElementById("title");
-      await fetch("/api/tasks", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title: input.value })
+    function render(tasks) {
+      list.innerHTML = "";
+      $("empty").hidden = tasks.length > 0;
+      $("statCount").textContent = tasks.length;
+      tasks.forEach((t) => {
+        const li = document.createElement("li");
+        const left = document.createElement("div");
+        const title = document.createElement("div");
+        title.className = "t-title";
+        title.textContent = t.title;
+        const time = document.createElement("div");
+        time.className = "t-time";
+        time.textContent = "Added " + new Date(t.created_at).toLocaleString();
+        left.append(title, time);
+
+        const del = document.createElement("button");
+        del.className = "del";
+        del.textContent = "Delete";
+        del.onclick = async () => {
+          li.classList.add("removing");
+          try {
+            await fetch("/api/tasks/" + t.id, { method: "DELETE" });
+            toast("Task deleted");
+          } catch (e) {
+            toast("Delete failed");
+          }
+          setTimeout(load, 220);
+        };
+
+        li.append(left, del);
+        list.append(li);
       });
-      input.value = "";
-      load();
+    }
+
+    async function load() {
+      const start = performance.now();
+      try {
+        const res = await fetch("/api/tasks");
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const tasks = await res.json();
+        $("statLatency").textContent = Math.round(performance.now() - start) + " ms";
+        render(tasks);
+      } catch (e) {
+        toast("Could not load tasks: " + e.message);
+      }
+    }
+
+    $("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = $("title");
+      const btn = $("addBtn");
+      const value = input.value.trim();
+      if (!value) return;
+      btn.disabled = true;
+      try {
+        const res = await fetch("/api/tasks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ title: value })
+        });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        input.value = "";
+        toast("Task added");
+        await load();
+      } catch (err) {
+        toast("Add failed: " + err.message);
+      } finally {
+        btn.disabled = false;
+        input.focus();
+      }
     });
 
+    checkHealth();
     load();
+    setInterval(checkHealth, 30000);
   </script>
 </body>
 </html>

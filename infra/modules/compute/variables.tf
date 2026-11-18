@@ -57,7 +57,7 @@ variable "app_requirements" {
 
 variable "min_size" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "desired_size" {

@@ -27,3 +27,4 @@ CloudWatch dashboard + alarms -> SNS email   |   AWS Budget alert
 
 Notes: single NAT gateway and single-AZ RDS keep cost low; use multi-AZ NAT and `multi_az = true` for real production.
 CI test
+CI test

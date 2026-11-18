@@ -1,0 +1,2 @@
+bucket = "YOUR-STATE-BUCKET-NAME"
+region = "ap-south-1"

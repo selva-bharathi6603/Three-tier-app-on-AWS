@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3-Tier AWS Task App</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 560px; margin: 40px auto; padding: 0 16px; background: #f5f6f8; color: #1f2933; }
+    h1 { font-size: 1.4rem; }
+    form { display: flex; gap: 8px; margin-bottom: 16px; }
+    input { flex: 1; padding: 10px; border: 1px solid #cbd2d9; border-radius: 6px; }
+    button { padding: 10px 14px; border: 0; border-radius: 6px; background: #2563eb; color: #fff; cursor: pointer; }
+    ul { list-style: none; padding: 0; }
+    li { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 10px 12px; margin-bottom: 8px; border-radius: 6px; }
+    li button { background: #dc2626; padding: 6px 10px; }
+    #status { font-size: .85rem; color: #52606d; }
+  </style>
+</head>
+<body>
+  <h1>Tasks (CloudFront + S3 → ALB → EC2 → RDS)</h1>
+  <p id="status">Checking API...</p>
+  <form id="form">
+    <input id="title" placeholder="New task" required maxlength="200">
+    <button type="submit">Add</button>
+  </form>
+  <ul id="list"></ul>
+
+  <script>
+    const list = document.getElementById("list");
+    const statusEl = document.getElementById("status");
+
+    async function load() {
+      try {
+        const res = await fetch("/api/tasks");
+        if (!res.ok) throw new Error(res.status);
+        const tasks = await res.json();
+        statusEl.textContent = "Connected to API and database";
+        list.innerHTML = "";
+        tasks.forEach(t => {
+          const li = document.createElement("li");
+          const span = document.createElement("span");
+          span.textContent = t.title;
+          const btn = document.createElement("button");
+          btn.textContent = "Delete";
+          btn.onclick = async () => { await fetch("/api/tasks/" + t.id, { method: "DELETE" }); load(); };
+          li.append(span, btn);
+          list.append(li);
+        });
+      } catch (e) {
+        statusEl.textContent = "API error: " + e.message;
+      }
+    }
+
+    document.getElementById("form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const input = document.getElementById("title");
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: input.value })
+      });
+      input.value = "";
+      load();
+    });
+
+    load();
+  </script>
+</body>
+</html>

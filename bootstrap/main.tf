@@ -35,6 +35,7 @@ provider "aws" {
 
 # ---------- Remote state bucket ----------
 resource "aws_s3_bucket" "state" {
+  force_destroy = true
   bucket = var.state_bucket_name
 }
 

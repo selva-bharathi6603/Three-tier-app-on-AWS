@@ -1,0 +1,132 @@
+{
+    "Deleted": [
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "GydaHaAk8FrQhPRJt0Axa__kl9kqPphH"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "JUBsl93UXg1DIyova5lfCNF7mhu1W3Tx"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "Q6SJvb6VVk2..Atd7SeiCfDgEGgYLtpQ"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "Sd7qxUxtABjwDrm8_4_HW.uQdHBG1KCe"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "k89hNawkarcE959bycSPDkJ7J3ppwRTr"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "Lq4YlOV7ayM.iHiFrXKDvFRyZ7tl202b"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "RxM.ozChkmhv7SizAue42XPxmefMNPZf"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "_oQFgAdkvkUxqmcRj09hfJgvas3f1Es7"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "DIn8XXOPaY5.wLq0AbbhMIME1FtRWnHt"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "cDhH2PlyL8XPqQdT.DOi2RR.00MqZpxz"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "n5vu5G3_8U2wt4mi8qJmuUGBoanMuGTS"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "C.4HM1aB9gMssmw9dNGtePDYje1ILZxM"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "cz5zAIT2YzCswGwWfXvden6Wp0DST01R"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "HOf.uKzRH.LxC5CZAvKCswXiMb6AKxNY"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "a6ztAm.itBq8beUE8DjyJyi1oZWGoIEx"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "r.ym.sptVrCJfhKU4jN_O0bAXmkbkeQX"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "E7nW0gKU7Nc8UGf6CEvwB_otgm_5Rrty"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "se6FtoUy4FN_HF3oQcBNSG3CLp0o8O1p"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "mkA3nrebdHg5uShyGFRxEXTBlnSNrOb5"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "jTnNuTqiuhx6xzEndB8Z2D3CEuS9FeAn"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "niaRjLk2AsskDarMCtXjiLRBnMAsFumE"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "1WmwNhnd9GPhUW7T1wzUzfezzbG4LzsA"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "gGkUZwBwFDy23VnnCI4jbuag.kqgCefh"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "_XDc4PfJtAwAztzhfeHBM7QQdlNJZfdT"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "NftzGVUD_ZapEiUsWTgV3O99C3E459g0"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "rhna8eFhxCkis2nOCyLjvmaPfNgGNccb"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "0ykU1kN.Qp.WzUXU935z8TgX.5xjZGcv"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate.tflock",
+            "VersionId": "mJWmJ9kWZ5Xk.JCSQIUy_4HvW5mfC06d"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "9lz26nbsmCb71DtDpP1rPxsHsfmiSNnP"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "RvuiJ0AFUdrq5L_491lQX76NH05PXRl5"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "TXbc67NHHxnLUti3D5gWHD1tFSAh6Nxm"
+        },
+        {
+            "Key": "tier3/dev/terraform.tfstate",
+            "VersionId": "3lPMTjNHBmxhMdGtt9gBDFIXVWQczUps"
+        }
+    ]
+}
